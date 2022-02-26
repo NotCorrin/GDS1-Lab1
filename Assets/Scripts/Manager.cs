@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Manager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Manager : MonoBehaviour
     [SerializeField] GameObject tree;
     [SerializeField] GameObject soldier;
     [SerializeField] GameObject hospital;
+    [SerializeField] GameObject uiSoldier;
+    [SerializeField] GameObject uiHelicopter;
 
     public int rescueCount = 0;
     public int soldierCount = 0;
@@ -37,6 +40,8 @@ public class Manager : MonoBehaviour
             SpawnGameObjects();
             soldierCount = 0;
             rescueCount = 0;
+            uiHelicopter.GetComponent<Text>().text = soldierCount.ToString();
+            uiSoldier.GetComponent<Text>().text = rescueCount.ToString();
         }
     }
 
@@ -45,6 +50,7 @@ public class Manager : MonoBehaviour
         if (soldierCount < soldierTreshold)
         {
             soldierCount++;
+            uiHelicopter.GetComponent<Text>().text = soldierCount.ToString();
             Destroy(soldier);
         }
     }
@@ -53,6 +59,8 @@ public class Manager : MonoBehaviour
     {
         rescueCount += soldierCount; 
         soldierCount = 0;
+        uiHelicopter.GetComponent<Text>().text = soldierCount.ToString();
+        uiSoldier.GetComponent<Text>().text = rescueCount.ToString();
     }
 
     void SpawnGameObjects()

@@ -8,11 +8,11 @@ public class Manager : MonoBehaviour
     [SerializeField] GameObject player;
     [SerializeField] GameObject tree;
     [SerializeField] GameObject soldier;
+    [SerializeField] GameObject hospital;
 
     public int rescueCount = 0;
     public int soldierCount = 0;
     public int soldierTreshold = 3;
-    // [SerializeField] GameObject hospital;
     float upperX;
     float lowerX;
     float upperY;
@@ -42,11 +42,17 @@ public class Manager : MonoBehaviour
 
     public void HandleSoldierPickup(GameObject soldier)
     {
-        if (rescueCount < soldierTreshold)
+        if (soldierCount < soldierTreshold)
         {
-            rescueCount++;
+            soldierCount++;
             Destroy(soldier);
         }
+    }
+
+    public void HandleSoldierDeposit()
+    {
+        rescueCount += soldierCount; 
+        soldierCount = 0;
     }
 
     void SpawnGameObjects()
@@ -54,6 +60,8 @@ public class Manager : MonoBehaviour
 
 
         Instantiate(player, new Vector3(-1f, 0, 0), Quaternion.identity);
+
+        Instantiate(hospital, new Vector3(-3f, 0, 0), Quaternion.identity);
 
         List<Vector3> treeLocations = new List<Vector3>();
         
@@ -145,6 +153,13 @@ public class Manager : MonoBehaviour
         foreach (GameObject soldier in soldiers)
         {
             Destroy(soldier);
+        }
+
+        // Remove all hospital game objects
+        GameObject[] hospitals = GameObject.FindGameObjectsWithTag("Hospital");
+        foreach (GameObject hospital in hospitals)
+        {
+            Destroy(hospital);
         }
     }
 }

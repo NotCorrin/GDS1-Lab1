@@ -238,6 +238,10 @@ MonoBehaviour:
   player: {fileID: 4674309699195954010, guid: 4cd10b0d33edf5140820c93f2c2a31d3, type: 3}
   tree: {fileID: 2640686458796317587, guid: b12c197b6cd465c40a7eafcaaef13306, type: 3}
   soldier: {fileID: 5341821137233195552, guid: e69fd020b4d499248b0cf82e11036ce6, type: 3}
+  hospital: {fileID: 4940023962772723085, guid: 86d42d16247fc0f4faa37d0b41d44286, type: 3}
+  rescueCount: 0
+  soldierCount: 0
+  soldierTreshold: 3
 --- !u!4 &2113534869
 Transform:
   m_ObjectHideFlags: 0

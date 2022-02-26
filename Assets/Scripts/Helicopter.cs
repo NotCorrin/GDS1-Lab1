@@ -66,13 +66,17 @@ public class Helicopter : MonoBehaviour
 
         if (other.gameObject.CompareTag("Death"))
         {
-            Debug.Log("Collided with Tree");
             Destroy(gameObject);
         }
 
         if (other.gameObject.CompareTag("Soldier"))
         {
             manager.HandleSoldierPickup(other.gameObject);
+        }
+
+        if (other.gameObject.CompareTag("Hospital"))
+        {
+            manager.HandleSoldierDeposit();
         }
     }
 }

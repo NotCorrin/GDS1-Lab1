@@ -24,6 +24,7 @@ public class Manager : MonoBehaviour
     float lowerY;
     public bool hasWon = false;
     public bool hasLost = false;
+    AudioSource audioSource;
     #endregion
 
     void Start()
@@ -32,6 +33,8 @@ public class Manager : MonoBehaviour
         upperY = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0)).y;
         lowerX = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).x + (upperX * 1.25f);
         lowerY = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).y;
+
+        audioSource = GetComponent<AudioSource>();
 
         SpawnGameObjects();
     }
@@ -75,6 +78,7 @@ public class Manager : MonoBehaviour
         if (soldierCount < soldierTreshold)
         {
             soldierCount++;
+            audioSource.Play();
             uiHelicopter.GetComponent<Text>().text = soldierCount.ToString();
             Destroy(soldier);
         }

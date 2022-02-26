@@ -7,10 +7,11 @@ public class Manager : MonoBehaviour
     #region Variables
     [SerializeField] GameObject player;
     [SerializeField] GameObject tree;
-    int rescueCount = 0;
-    int soldierCount = 0;
-    int soldierTreshold = 3;
-    // [SerializeField] GameObject soldier;
+    [SerializeField] GameObject soldier;
+
+    public int rescueCount = 0;
+    public int soldierCount = 0;
+    public int soldierTreshold = 3;
     // [SerializeField] GameObject hospital;
     float upperX;
     float lowerX;
@@ -34,6 +35,17 @@ public class Manager : MonoBehaviour
         {
             RemoveAllGameObjects();
             SpawnGameObjects();
+            soldierCount = 0;
+            rescueCount = 0;
+        }
+    }
+
+    public void HandleSoldierPickup(GameObject soldier)
+    {
+        if (rescueCount < soldierTreshold)
+        {
+            rescueCount++;
+            Destroy(soldier);
         }
     }
 
@@ -50,7 +62,7 @@ public class Manager : MonoBehaviour
         Instantiate(tree, new Vector3 (Random.Range(lowerX, upperX), Random.Range(lowerY, upperY), 0), Quaternion.identity);
         treeLocations.Add(firstVector);
         
-        // Spawn 3 to 5 trees
+        // Spawn 2 to 4 trees
         for (int i = 0; i < Random.Range(2, 4); i++)
         {
             Vector3 tempVector = new Vector3 (Random.Range(lowerX, upperX), Random.Range(lowerY, upperY), 0);
@@ -77,6 +89,39 @@ public class Manager : MonoBehaviour
                 isSpawnable = true;
             }
         }
+
+        // Spawn first soldier
+        Vector3 firstSoldierVector = new Vector3(Random.Range(lowerX, upperX), Random.Range(lowerY, upperY), 0);
+        Instantiate(soldier, new Vector3 (Random.Range(lowerX, upperX), Random.Range(lowerY, upperY), 0), Quaternion.identity);
+        treeLocations.Add(firstSoldierVector);
+
+        // Spawn 3 to 5 soldiers
+        for (int i = 0; i < Random.Range(3, 5); i++)
+        {
+            Vector3 tempVector = new Vector3 (Random.Range(lowerX, upperX), Random.Range(lowerY, upperY), 0);
+            bool soldierSpawned = false;
+            bool isSpawnable = true;
+
+            while(!soldierSpawned)
+            {
+                foreach (Vector3 treeLocation in treeLocations)
+                {
+                    if (Vector3.Distance(tempVector, treeLocation) < 1.3f)
+                    {
+                        isSpawnable = false;
+                    }
+                }
+                if (isSpawnable)
+                {
+                    treeLocations.Add(tempVector);
+                    Instantiate(soldier, tempVector, Quaternion.identity);
+                    soldierSpawned = true;
+                    break;
+                }
+                tempVector = new Vector3(Random.Range(lowerX, upperX), Random.Range(lowerY, upperY), 0);
+                isSpawnable = true;
+            }
+        }
     }
 
     void RemoveAllGameObjects()
@@ -93,6 +138,13 @@ public class Manager : MonoBehaviour
         foreach (GameObject tree in trees)
         {
             Destroy(tree);
+        }
+
+        // Remove all soldier game objects
+        GameObject[] soldiers = GameObject.FindGameObjectsWithTag("Soldier");
+        foreach (GameObject soldier in soldiers)
+        {
+            Destroy(soldier);
         }
     }
 }

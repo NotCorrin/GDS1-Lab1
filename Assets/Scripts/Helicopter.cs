@@ -7,6 +7,7 @@ public class Helicopter : MonoBehaviour
     #region Variables
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] SpriteRenderer spriteRenderer;
+    Manager manager;
     Vector2 movement;
     #endregion
 
@@ -15,6 +16,12 @@ public class Helicopter : MonoBehaviour
         if (spriteRenderer == null)
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+
+        manager = GameObject.Find("Game Manager").GetComponent<Manager>();
+        if (manager == null)
+        {
+            Debug.LogError("Manager is null");
         }
     }
 
@@ -61,6 +68,11 @@ public class Helicopter : MonoBehaviour
         {
             Debug.Log("Collided with Tree");
             Destroy(gameObject);
+        }
+
+        if (other.gameObject.CompareTag("Soldier"))
+        {
+            manager.HandleSoldierPickup(other.gameObject);
         }
     }
 }

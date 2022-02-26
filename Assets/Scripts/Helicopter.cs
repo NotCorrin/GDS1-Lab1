@@ -56,5 +56,11 @@ public class Helicopter : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("Collision Detected...");
+
+        if (other.gameObject.CompareTag("Death"))
+        {
+            Debug.Log("Collided with Tree");
+            Destroy(gameObject);
+        }
     }
 }

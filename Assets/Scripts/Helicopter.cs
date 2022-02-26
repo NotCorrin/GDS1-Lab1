@@ -27,6 +27,10 @@ public class Helicopter : MonoBehaviour
 
     void Update()
     {
+        if (manager.hasWon || manager.hasLost)
+        {
+            return;
+        }
         if (Input.GetButton("Horizontal"))
         {
             movement.x = Input.GetAxisRaw("Horizontal");
@@ -66,6 +70,7 @@ public class Helicopter : MonoBehaviour
 
         if (other.gameObject.CompareTag("Death"))
         {
+            manager.hasLost = true;
             Destroy(gameObject);
         }
 

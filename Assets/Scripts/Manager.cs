@@ -12,14 +12,18 @@ public class Manager : MonoBehaviour
     [SerializeField] GameObject hospital;
     [SerializeField] GameObject uiSoldier;
     [SerializeField] GameObject uiHelicopter;
+    [SerializeField] GameObject uiGameStatus;
 
     public int rescueCount = 0;
     public int soldierCount = 0;
     public int soldierTreshold = 3;
+    public int totalSoldierCount = 0;
     float upperX;
     float lowerX;
     float upperY;
     float lowerY;
+    public bool hasWon = false;
+    public bool hasLost = false;
     #endregion
 
     void Start()
@@ -37,11 +41,32 @@ public class Manager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             RemoveAllGameObjects();
-            SpawnGameObjects();
+            totalSoldierCount = 0;
             soldierCount = 0;
             rescueCount = 0;
+            hasWon = false;
+            hasLost = false;
+            SpawnGameObjects();
             uiHelicopter.GetComponent<Text>().text = soldierCount.ToString();
             uiSoldier.GetComponent<Text>().text = rescueCount.ToString();
+        }
+
+        if (rescueCount == totalSoldierCount)
+        {
+            hasWon = true;
+        }
+
+        if (hasWon)
+        {
+            uiGameStatus.GetComponent<Text>().text = "You Win!";
+        }
+        else if (hasLost)
+        {
+            uiGameStatus.GetComponent<Text>().text = "You Lose!";
+        }
+        else
+        {
+            uiGameStatus.GetComponent<Text>().text = "";
         }
     }
 
@@ -110,6 +135,7 @@ public class Manager : MonoBehaviour
         Vector3 firstSoldierVector = new Vector3(Random.Range(lowerX, upperX), Random.Range(lowerY, upperY), 0);
         Instantiate(soldier, new Vector3 (Random.Range(lowerX, upperX), Random.Range(lowerY, upperY), 0), Quaternion.identity);
         treeLocations.Add(firstSoldierVector);
+        totalSoldierCount++;
 
         // Spawn 3 to 5 soldiers
         for (int i = 0; i < Random.Range(3, 5); i++)
@@ -131,6 +157,7 @@ public class Manager : MonoBehaviour
                 {
                     treeLocations.Add(tempVector);
                     Instantiate(soldier, tempVector, Quaternion.identity);
+                    totalSoldierCount++;
                     soldierSpawned = true;
                     break;
                 }
